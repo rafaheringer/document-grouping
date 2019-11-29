@@ -9,7 +9,7 @@ export const DOCUMENTSMOCK: DocumentModel[] = [
   },
   {
     fileName: 'lorem2.pdf',
-    fullText: 'Lorem ipsum lorem',
+    fullText: 'Lorem lorem ipsum',
     keywordsCount: { 0: 2, 1: 1 },
     wordsCount: 3
   },
@@ -69,7 +69,7 @@ export const DOCUMENTSMOCK: DocumentModel[] = [
   },
   {
     fileName: 'lorem2.pdf',
-    fullText: 'Lorem ipsum lorem',
+    fullText: 'Lorem Lorem Lorem Lorem Lorem  ipsum lorem',
     keywordsCount: { 0: 10, 1: 2 },
     wordsCount: 3
   }

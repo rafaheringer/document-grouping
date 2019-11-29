@@ -18,3 +18,8 @@ export class DocumentModel {
     return sum;
   }
 }
+
+export class GlobalKeywordsModel {
+  Key: number;
+  Value: string;
+}

@@ -18,10 +18,7 @@ import { DocumentsViewerModule } from './modules/documents-viewer/documents-view
   imports: [
     BrowserModule,
     AppRoutingModule,
-    DocumentsViewerModule,
-    AngularFirestoreModule,
-    AngularFireStorageModule,
-    AngularFireModule.initializeApp(environment.firebase)
+    DocumentsViewerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

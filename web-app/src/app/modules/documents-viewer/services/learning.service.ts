@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
-import { DocumentModel } from 'src/app/models/document.model';
+import { DocumentModel, GlobalKeywordsModel } from 'src/app/models/document.model';
 import { GroupLearningModel } from 'src/app/models/learning.model';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LearningService {
 
-  private _limitKeywords = 10;
+  private _limitKeywords = 1000000;
   private _tolerance = 0.20;
   private _equalizeGroupWhenDocumentCountIs = 3;
   private _groups: GroupLearningModel[] = [];
 
-  constructor() { }
+  constructor(private firebase: AngularFireDatabase) { }
 
   private compareDocumentAgainstGroup(document: DocumentModel, group: GroupLearningModel): boolean {
     let finalSkore = 0;
