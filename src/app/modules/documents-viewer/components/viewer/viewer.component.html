@@ -1,0 +1,29 @@
+<app-menu></app-menu>
+
+<div class="list-of-files container">
+    <div class="row">
+        <div class="col-md-6 mb-3" *ngFor="let group of groups; let i = index">
+            <h3>Group {{i}}</h3>
+            <div class="row pl-2 pr-2">
+                <div class="col-sm-2 p-1" *ngFor="let document of group.documents">
+                    <div class="card">
+                        <img clas="card-img-top" height="90" />
+
+                        <div class="card-words-resume border bg-light p-1">
+                            <div class="card-words-resume-item" *ngFor="let word of document.keywordsCount | keyvalue">
+                                <div class="progress">
+                                    <div class="progress-bar" [style.marginLeft.%]="100 - ((word.value * 100) / document.wordsCount)" [style.width.%]="(word.value * 100) / document.wordsCount"></div>
+                                </div>  
+                                <div class="progressbar-text pl-1 pr-1">{{wordsIndex[word.key]}}</div>
+                            </div>
+                        </div>
+
+                        <div class="card-body p-1">
+                            <p class="card-text">{{document.fileName}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,71 @@
+//Animations (http://animista.net/)
+@keyframes spin
+  100%
+      transform: rotate(360deg)
+
+@keyframes rotate-in-center
+  0%
+    transform: rotate(-360deg)
+    opacity: 0
+  100%
+    transform: rotate(0)
+    opacity: 1
+
+@keyframes fade-in
+  0%
+    opacity: 0
+  100%
+    opacity: 1
+
+@keyframes slide-in-top
+  0%
+    transform: translateY(-1000px)
+    opacity: 0
+  100%
+    transform: translateY(0)
+    opacity: 1
+
+@keyframes slide-top
+  0%
+    transform: translateY(0)
+  100%
+    transform: translateY(-100px)
+
+@keyframes swing-in-top-fwd
+  0%
+    transform: rotateX(-100deg)
+    transform-origin: top
+    opacity: 0
+  100%
+    transform: rotateX(0deg)
+    transform-origin: top
+    opacity: 1
+
+@keyframes flip-in-hor-bottom
+  0%
+    transform: rotateX(80deg)
+    opacity: 0
+  100%
+    transform: rotateX(0deg)
+    opacity: 1
+
+.spin
+  animation: spin 1s linear infinite
+
+.rotate-in-center
+  animation: rotate-in-center 1s cubic-bezier(.25,.46,.45,.94) both
+
+.fade-in
+  animation: fade-in 1.2s cubic-bezier(.39,.575,.565,1.000) both
+
+.slide-in-top
+  animation: slide-in-top .5s cubic-bezier(.25,.46,.45,.94) both
+
+.slide-top
+  animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
+
+.swing-in-top-fwd 
+  animation: swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275) both
+
+.flip-in-hor-bottom 
+  animation: flip-in-hor-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both
