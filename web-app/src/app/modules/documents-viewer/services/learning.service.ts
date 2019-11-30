@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 export class LearningService {
 
   private _limitKeywords = 20;
-  private _tolerance = 0.20;
+  private _tolerance = 0.30;
   private _equalizeGroupWhenDocumentCountIs = 3;
   private _groups: GroupLearningModel[] = [];
 
@@ -24,11 +24,11 @@ export class LearningService {
 
     group.keywordsAverage.forEach(keyword => {
       const keyAverageCount = group.keywordsAverage.find(x => x.key === keyword.key).count;
-      const keyDocumentCount = document.keywordsCount.find(x => x.key === keyword.key).count;
       const weight = keyAverageCount / wordsCount;
       let skore = 0;
 
-      if (keyDocumentCount) {
+      if (typeof(document.keywordsCount.find(x => x.key === keyword.key)) !== 'undefined') {
+        const keyDocumentCount = document.keywordsCount.find(x => x.key === keyword.key).count;
         const max = keyAverageCount + (keyAverageCount * group.tolerance);
         const min = keyAverageCount - (keyAverageCount * group.tolerance);
 
