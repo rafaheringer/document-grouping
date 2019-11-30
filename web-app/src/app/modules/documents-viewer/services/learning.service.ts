@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class LearningService {
 
-  private _limitKeywords = 5;
+  private _limitKeywords = 20;
   private _tolerance = 0.20;
   private _equalizeGroupWhenDocumentCountIs = 3;
   private _groups: GroupLearningModel[] = [];
@@ -20,7 +20,7 @@ export class LearningService {
     let finalSkore = 0;
     let skores = [];
 
-    const wordsCount = group.wordsCount;
+    const wordsCount = group.keywordsAverage.reduce((a, b) => (a + b.count), 0);
 
     group.keywordsAverage.forEach(keyword => {
       const keyAverageCount = group.keywordsAverage.find(x => x.key === keyword.key).count;
@@ -65,44 +65,41 @@ export class LearningService {
   }
 
   public compareOneAgainstAll(documents: DocumentModel[]) {
-    let groupLength = this._groups.length;
-
     documents.forEach((document, index) => {
-      document.keywordsCount = document.keywordsCount.sort((a, b) => b.count - a.count);
+      document.keywordsCount = document.keywordsCount.sort((a, b) => b.count - a.count).slice(0, this._limitKeywords);
+      const groupLength = this._groups.length;
+
       // First group
-      if (index === 0) {
+      if (groupLength === 0) {
         let gp = new GroupLearningModel();
         gp.documents = [document];
         gp.keywordsAverage = document.keywordsCount;
         gp.keywordsLimit = this._limitKeywords;
         gp.tolerance = this._tolerance;
-        this._groups.push(gp);
-        groupLength++;
+        this.addGroup(gp);
       } else {
         // Compare with all groups
         // tslint:disable-next-line: prefer-for-of
-
         for (let i = 0; i < groupLength; i++) {
-          groupLength = this._groups.length;
-
           if (this.compareDocumentAgainstGroup(document, this._groups[i])) {
             this._groups[i].documents.push(document);
             break;
-          }
-
-          // Create new group
-          else if(i === groupLength - 1) {
+          } else if(i === groupLength - 1) {
             let gp = new GroupLearningModel();
             gp.documents = [document];
             gp.keywordsAverage = document.keywordsCount;
             gp.keywordsLimit = this._limitKeywords;
             gp.tolerance = this._tolerance;
-            this._groups.push(gp);
+            this.addGroup(gp);
           }
         }
 
       }
     });
+  }
+
+  private addGroup(group: GroupLearningModel) {
+    this._groups.push(group);
   }
 
   public getGroups(): GroupLearningModel[] {

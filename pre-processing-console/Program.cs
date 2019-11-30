@@ -35,7 +35,7 @@ namespace pre_processing_console
         static string CleanString(string text) => string.Join(" ", text.Split().Where(x => !new string[] { ";", ",", @"\r", @"\t", @"\n", ":" }.Contains(x)));
 
         static string[] ExtractImportantWordsFromText(string text) {
-            List<String> ignoreList = new List<String>() { "na", "no", "da", "do", "de", "para", "e", "o", "a", "-", ":" };
+            List<String> ignoreList = new List<String>() { "na", "no", "da", "do", "de", "para", "e", "o", "a", "-", ":", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
             text = CleanString(text.ToLower());
             text = string.Join(" ", text.Split().Where(x => !ignoreList.Contains(x)));
