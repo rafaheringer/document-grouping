@@ -10,7 +10,6 @@ namespace pre_processing_console
 {
     class Program
     {
-        private static List<KeyValuePair<int, string>> wordsList = new List<KeyValuePair<int, string>>();
         private static PDFFactory pdfFactory = new PDFFactory();
         private static BagOfWordsFactory bagOfWordsFactory = new BagOfWordsFactory();
         private static FirebaseClient firebaseClient = FirebaseAuthentication();
