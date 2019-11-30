@@ -1,8 +1,8 @@
-import { DocumentModel } from './document.model';
+import { DocumentModel, DocumentKeywordModel } from './document.model';
 
 export class GroupLearningModel {
   documents: DocumentModel[];
-  keywordsAverage: { [key: number]: number };
+  keywordsAverage: DocumentKeywordModel[];
   keywordsLimit: number;
   tolerance: number;
   get wordsCount(): number {

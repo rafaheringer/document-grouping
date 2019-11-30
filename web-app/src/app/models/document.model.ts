@@ -1,5 +1,5 @@
 export class DocumentKeywordModel {
-  index: number;
+  key: number;
   count: number;
 }
 
@@ -7,7 +7,7 @@ export class DocumentModel {
   fileName: string;
   fullText: string;
   skore?: number;
-  keywordsCount: { [key: number]: number };
+  keywordsCount: DocumentKeywordModel[];
   get wordsCount(): number {
     let sum = 0;
 

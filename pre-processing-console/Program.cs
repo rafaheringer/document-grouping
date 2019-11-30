@@ -86,7 +86,7 @@ namespace pre_processing_console
                 // 2. Extrai o texto por completo
                 var fullTextFromPDF = ExtractPDFullText(pdfPath);
                 var PDFWords = ExtractImportantWordsFromText(fullTextFromPDF);
-                var PDFWordsCounts = new List<Dictionary<int, int>>();
+                var PDFWordsCounts = new List<KeyCountModel>();
 
                 // 3. Compara índice de palvras já configuradas e coloca no índice novas palavras 
                 // Isso serve para tornar o processo rápido. Caso contrário, teria que bater palavra por palavra com o modelo, comparando strings
@@ -107,16 +107,17 @@ namespace pre_processing_console
                     }
 
                     // Verifica se o índice está no dicionário do PDF
-                    var pdfDictionaryWordIndex = PDFWordsCounts.Find(x => x.First().Key == globalDictionaryWordIndex.Key);
+                    var pdfDictionaryWordIndex = PDFWordsCounts.Find(x => x.key == globalDictionaryWordIndex.Key);
                     var isInPdfDictionary = pdfDictionaryWordIndex != null;
 
                     // Se não está, adiciona
                     if(!isInPdfDictionary) {
-                        var dict = new Dictionary<int, int>();
-                        dict.Add(globalDictionaryWordIndex.Key, 1);
-                        PDFWordsCounts.Add(dict);
+                        PDFWordsCounts.Add(new KeyCountModel() {
+                            key = globalDictionaryWordIndex.Key,
+                            count = 1
+                        });
                     } else {
-                        pdfDictionaryWordIndex[globalDictionaryWordIndex.Key]++;
+                        pdfDictionaryWordIndex.count++;
                     }
                 };
 

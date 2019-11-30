@@ -22,27 +22,26 @@ export class LearningService {
 
     const wordsCount = group.wordsCount;
 
-    Object.keys(group.keywordsAverage).forEach(key => {
-      const weight = group.keywordsAverage[key] / wordsCount;
+    group.keywordsAverage.forEach(keyword => {
+      const keyAverageCount = group.keywordsAverage.find(x => x.key === keyword.key).count;
+      const keyDocumentCount = document.keywordsCount.find(x => x.key === keyword.key).count;
+      const weight = keyAverageCount / wordsCount;
       let skore = 0;
 
-      if(document.keywordsCount[key]) {
-        const max = group.keywordsAverage[key] + (group.keywordsAverage[key] * group.tolerance);
-        const min = group.keywordsAverage[key] - (group.keywordsAverage[key] * group.tolerance);
+      if (keyDocumentCount) {
+        const max = keyAverageCount + (keyAverageCount * group.tolerance);
+        const min = keyAverageCount - (keyAverageCount * group.tolerance);
 
         // Caraca sou muito ruim de montar fórmula matemática
-        if (document.keywordsCount[key] >= group.keywordsAverage[key]) {
-          skore = (100 + (this._tolerance * 10) - ((document.keywordsCount[key] * 100) / (max))) / 10;
+        if (keyDocumentCount >= keyAverageCount) {
+          skore = (100 + (this._tolerance * 10) - ((keyDocumentCount * 100) / (max))) / 10;
           if (skore < 0) {
             skore = 0;
           }
         } else {
-          let f = (100 + (this._tolerance * 10) - ((document.keywordsCount[key] * 100) / (min))) / 10;
-          if (f > 0) {
+          skore = Math.abs((100 + (this._tolerance * 10) - ((keyDocumentCount * 100) / (min))) / 10);
+          if (skore < 0) {
             skore = 0;
-          }
-          else {
-            skore = Math.abs(f);
           }
         }
       }
