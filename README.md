@@ -12,6 +12,8 @@ Made with Angular, the objetive is clarify the Machine Learning process with vis
 
 
 ## First step: Feature Extraction - Bag of Words
+<img src="https://qph.fs.quoracdn.net/main-qimg-4934f0958e121d33717f848230ef664a" width="400" style="float: left; margin-right: 15px;" />
+
 The bag-of-words model is a way of representing text data when modeling text with machine learning algorithms, where a vector represents the frequency of a word in a predefined dictionary of words. Machine learning algorithms cannot work with raw text directly; the text must be converted into numbers. Specifically, vectors of numbers. The model is only concerned with whether known words occur in the document, not where in the document.
 
 A bag-of-words is a representation of text that describes the occurrence of words within a document. It involves two things:
