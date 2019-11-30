@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Firebase.Database;
 using Newtonsoft.Json;
@@ -16,8 +14,6 @@ namespace pre_processing_console
         private static PDFFactory pdfFactory = new PDFFactory();
         private static BagOfWordsFactory bagOfWordsFactory = new BagOfWordsFactory();
         private static FirebaseClient firebaseClient = FirebaseAuthentication();
-
-        static void AddWordsToDictionary(string word) => wordsList.Add(new KeyValuePair<int, string>(wordsList.Count, word)); // TODO: Salvar em banco e escolher um método para poder salvar índices de forma paralela.
 
         static FirebaseClient FirebaseAuthentication() {
             var auth = "QINTF3PV0sjAJJCkjrGNytOkIqPwX2qElwP2PGrA"; // APP Secrect for Testing Porpousing...
@@ -42,42 +38,28 @@ namespace pre_processing_console
                 var fullTextFromPDF =       pdfFactory.ExtractPDFullText(pdfPath);
                 var PDFWords =              bagOfWordsFactory.PrepareTextToBag(fullTextFromPDF);
                 var PDFWordsDictionary =    new List<KeyCountModel>();
-                var globalWordsDictionary = bagOfWordsFactory.GetGlobalWordsDictionary();
+                
 
-                // 3. Compara índice de palvras já configuradas e coloca no índice novas palavras 
-                // Isso serve para tornar o processo rápido. Caso contrário, teria que bater palavra por palavra com o modelo, comparando strings
-                // TODO: Fazer cálculo diferente para adicionar no índice 
+                // Check each word against global bag
                 foreach (var word in PDFWords) {
+                    var globalWordsDictionary =     bagOfWordsFactory.GetGlobalWordsDictionary();
+                    var globalDictionaryWordIndex = globalWordsDictionary.Find(x => x.Value == word); // Check if word is in global dictionary
+                    var isInGlobalDictionary =      globalDictionaryWordIndex.Value != null;
 
-                    // Verifica se a palavra está no dicionário global
-                    var globalDictionaryWordIndex = globalWordsDictionary.Find(x => x.Value == word);
-                    var isInGlobalDictionary = globalDictionaryWordIndex.Value != null;
+                    if(!isInGlobalDictionary) globalDictionaryWordIndex = bagOfWordsFactory.AddWordOnGlobalDictionary(word);
 
-                    // Se não está no dicionário global, adiciona e resgata o índice
-                    if(!isInGlobalDictionary) {
-                        // AddWordsToDictionary(word);
-                        var i = globalWordsDictionary.Count;
-                        globalWordsDictionary.Add(new KeyValuePair<int, string>(i, word));
-                        globalDictionaryWordIndex = globalWordsDictionary.Find(x => x.Key == i);
-                        isInGlobalDictionary = true;
-                    }
-
-                    // Verifica se o índice está no dicionário do PDF
+                    // Check if words is present in local bag
                     var pdfDictionaryWordIndex = PDFWordsDictionary.Find(x => x.key == globalDictionaryWordIndex.Key);
                     var isInPdfDictionary = pdfDictionaryWordIndex != null;
 
-                    // Se não está, adiciona
-                    if(!isInPdfDictionary) {
-                        PDFWordsDictionary.Add(new KeyCountModel() {
-                            key = globalDictionaryWordIndex.Key,
-                            count = 1
-                        });
-                    } else {
+                    if(!isInPdfDictionary)
+                        PDFWordsDictionary.Add(new KeyCountModel() { key = globalDictionaryWordIndex.Key, count = 1 });
+                    else 
                         pdfDictionaryWordIndex.count++;
-                    }
+                    
                 };
 
-                // 5. Salva no banco o metadado deste arquivo (id, nome, texto extraído, índice de palavras e contagem)
+                // Persinst data
                 var fileName = pdfPath.Split("\\").Last();
                 var preprocessedDocument = new PreprocessedDocumentModel() {
                     fileId = fileName,
@@ -90,7 +72,6 @@ namespace pre_processing_console
                 await firebaseClient.Child("preprocessed-documents/" + preprocessedDocument.fileId.Replace(".","").Replace(" ","")).PutAsync(JsonConvert.SerializeObject(preprocessedDocument));
             }
           
-            
             await firebaseClient.Child("global-words").PutAsync(JsonConvert.SerializeObject(bagOfWordsFactory.GetGlobalWordsDictionary()));
 
             Console.WriteLine("Hello World!");

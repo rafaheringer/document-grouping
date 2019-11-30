@@ -68,7 +68,7 @@ namespace pre_processing_console.factories
         public TextFactory IgnoreTwoCharWords()
         {
             var words = this.ExtractWords();
-            this._text = String.Join(" ", words.Where(x => x.Length > 1));
+            this._text = String.Join(" ", words.Where(x => x.Length > 2));
             return this;
         }
 
