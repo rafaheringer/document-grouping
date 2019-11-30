@@ -32,17 +32,28 @@ namespace pre_processing_console
             return output.ToString();
         }
 
-        static string CleanString(string text) => string.Join(" ", text.Split().Where(x => !new string[] { ";", ",", @"\r", @"\t", @"\n", ":", "(", ")" }.Contains(x)));
+        static string CleanString(string text) => string.Join(" ", text.Split().Where(x => !new string[] { @"\r", @"\t", @"\n" }.Contains(x)));
+
+        static string RemoveNonAlphaFromString(string text) {
+            char[] arr = text.Where(c => (char.IsLetter(c) || char.IsWhiteSpace(c))).ToArray(); 
+            return new string(arr);
+        }
+
+        static string RemoveOneOrTwoLetterFromString(string text) => String.Join(" ", text.Split(" ").Where(x => x.Length > 2));
+
+        static string RemoveKeyWordsFromString(string text) {
+            List<String> ignoreList = new List<String>() { "cnpj", "ltda", "mei", "me", "na", "no", "da", "do", "de", "para", "e", "o", "a", "ou"};
+            return string.Join(" ", text.Split(" ").Where(x => !ignoreList.Contains(x)));
+        }
 
         static string[] ExtractImportantWordsFromText(string text) {
-            List<String> ignoreList = new List<String>() { "na", "no", "da", "do", "de", "para", "e", "o", "a", "-", "/", ":", "(=)", "(-)", "(+)", "r$", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
-
             text = CleanString(text.ToLower());
-            text = string.Join(" ", text.Split().Where(x => !ignoreList.Contains(x)));
+            text = RemoveNonAlphaFromString(text);
+            text = RemoveKeyWordsFromString(text);
             text = RemoveDiacritics(text);
+            text = RemoveOneOrTwoLetterFromString(text);
 
-            var words = text.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-            return words.Where(x => !ignoreList.Any(i => i == x)).ToArray();
+            return text.Split(" ", StringSplitOptions.RemoveEmptyEntries);
         }
 
         static string RemoveDiacritics(string text) {
@@ -130,6 +141,7 @@ namespace pre_processing_console
                     keywordsCount = PDFWordsCounts
                 };
 
+                Console.WriteLine(String.Concat("Salvando documento: ", preprocessedDocument.fileName));
                 await firebaseClient.Child("preprocessed-documents/" + preprocessedDocument.fileId.Replace(".","").Replace(" ","")).PutAsync(JsonConvert.SerializeObject(preprocessedDocument));
             }
           
