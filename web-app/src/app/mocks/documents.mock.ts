@@ -10,8 +10,7 @@ export const DOCUMENTSMOCK: DocumentModel[] = [
       {key: 2, count: 1},
       {key: 3, count: 1},
       {key: 4, count: 1}
-    ],
-    wordsCount: 5
+    ]
   },
   {
     fileName: 'lorem2.pdf',
@@ -19,7 +18,6 @@ export const DOCUMENTSMOCK: DocumentModel[] = [
     keywordsCount: [
       {key: 0, count: 2},
       {key: 1, count: 1}
-    ],
-    wordsCount: 3
+    ]
   }
 ];

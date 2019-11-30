@@ -8,15 +8,6 @@ export class DocumentModel {
   fullText: string;
   skore?: number;
   keywordsCount: DocumentKeywordModel[];
-  get wordsCount(): number {
-    let sum = 0;
-
-    Object.keys(this.keywordsCount).forEach(key => {
-      sum += this.keywordsCount[key];
-    });
-
-    return sum;
-  }
 }
 
 export class GlobalKeywordsModel {

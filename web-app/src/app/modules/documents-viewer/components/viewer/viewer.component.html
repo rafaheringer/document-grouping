@@ -12,7 +12,7 @@
                         <div class="card-words-resume border bg-light p-1">
                             <div class="card-words-resume-item" *ngFor="let word of document.keywordsCount">
                                 <div class="progress">
-                                    <div class="progress-bar" [style.marginLeft.%]="100 - ((word.count * 100) / document.wordsCount)" [style.width.%]="(word.count * 100) / document.wordsCount"></div>
+                                    <div class="progress-bar" [style.marginLeft.%]="100 - ((word.count * 100) / document.keywordsCount.length)" [style.width.%]="(word.count * 100) / document.keywordsCount.length"></div>
                                 </div>
                                 <div class="progressbar-text pl-1 pr-1 text-truncate">({{word.count}}) {{getWordByIndex(word.key)}}</div>
                             </div>

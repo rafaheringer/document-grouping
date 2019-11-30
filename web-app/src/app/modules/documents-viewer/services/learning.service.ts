@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class LearningService {
 
-  private _limitKeywords = 1000000;
+  private _limitKeywords = 5;
   private _tolerance = 0.20;
   private _equalizeGroupWhenDocumentCountIs = 3;
   private _groups: GroupLearningModel[] = [];
@@ -68,6 +68,7 @@ export class LearningService {
     let groupLength = this._groups.length;
 
     documents.forEach((document, index) => {
+      document.keywordsCount = document.keywordsCount.sort((a, b) => b.count - a.count);
       // First group
       if (index === 0) {
         let gp = new GroupLearningModel();
