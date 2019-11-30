@@ -4,7 +4,7 @@ public class PreprocessedDocumentModel {
     public string fileName {get; set;}
     public string fileId {get; set;}
     public string fullText {get; set;}
-    public List<KeyCountModel> keywordsCount {get; set;}
+    public List<KeyValuePair<int, int>> keywordsCount {get; set;}
 }
 
 public class KeyCountModel {
