@@ -15,35 +15,7 @@ namespace pre_processing_console
         private static List<KeyValuePair<int, string>> wordsList = new List<KeyValuePair<int, string>>();
         private static PDFFactory pdfFactory = new PDFFactory();
 
-        static string CleanString(string text) => string.Join(" ", text.Split().Where(x => !new string[] { @"\r", @"\t", @"\n" }.Contains(x)));
-
-        static string RemoveNonAlphaFromString(string text) {
-            char[] arr = text.Where(c => (char.IsLetter(c) || char.IsWhiteSpace(c))).ToArray(); 
-            return new string(arr);
-        }
-
-        static string RemoveOneOrTwoLetterFromString(string text) => String.Join(" ", text.Split(" ").Where(x => x.Length > 2));
-
-        static string RemoveKeyWordsFromString(string text) {
-            List<String> ignoreList = new List<String>() { "cnpj", "ltda", "mei", "me", "na", "no", "da", "do", "de", "para", "e", "o", "a", "ou"};
-            return string.Join(" ", text.Split(" ").Where(x => !ignoreList.Contains(x)));
-        }
-
-        static string[] ExtractImportantWordsFromText(string text) {
-            text = CleanString(text.ToLower());
-            text = RemoveNonAlphaFromString(text);
-            text = RemoveKeyWordsFromString(text);
-            text = RemoveDiacritics(text);
-            text = RemoveOneOrTwoLetterFromString(text);
-
-            return text.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-        }
-
-        static string RemoveDiacritics(string text) {
-            text = text.Normalize(NormalizationForm.FormD);
-            var chars = text.Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark).ToArray();
-            return new string(chars).Normalize(NormalizationForm.FormC);
-        }
+        private static BagOfWordsFactory bagOfWordsFactory = new BagOfWordsFactory();
 
         static List<KeyValuePair<int, string>> GetWordsDictionary() => wordsList; // TODO: Buscar essa lista em algum banco de dados
 
@@ -77,10 +49,10 @@ namespace pre_processing_console
             
             foreach (var pdfPath in listOfPDFs)
             {
-                // 2. Extrai o texto por completo
-                var fullTextFromPDF = pdfFactory.ExtractPDFullText(pdfPath);
-                var PDFWords = ExtractImportantWordsFromText(fullTextFromPDF);
-                var PDFWordsCounts = new List<KeyCountModel>();
+                // 2. Extract PDF text and words
+                var fullTextFromPDF =       pdfFactory.ExtractPDFullText(pdfPath);
+                var PDFWords =              bagOfWordsFactory.PrepareTextToBag(fullTextFromPDF);
+                var PDFWordsDictionary =    new List<KeyCountModel>();
 
                 // 3. Compara índice de palvras já configuradas e coloca no índice novas palavras 
                 // Isso serve para tornar o processo rápido. Caso contrário, teria que bater palavra por palavra com o modelo, comparando strings
@@ -101,12 +73,12 @@ namespace pre_processing_console
                     }
 
                     // Verifica se o índice está no dicionário do PDF
-                    var pdfDictionaryWordIndex = PDFWordsCounts.Find(x => x.key == globalDictionaryWordIndex.Key);
+                    var pdfDictionaryWordIndex = PDFWordsDictionary.Find(x => x.key == globalDictionaryWordIndex.Key);
                     var isInPdfDictionary = pdfDictionaryWordIndex != null;
 
                     // Se não está, adiciona
                     if(!isInPdfDictionary) {
-                        PDFWordsCounts.Add(new KeyCountModel() {
+                        PDFWordsDictionary.Add(new KeyCountModel() {
                             key = globalDictionaryWordIndex.Key,
                             count = 1
                         });
@@ -121,7 +93,7 @@ namespace pre_processing_console
                     fileId = fileName,
                     fileName = fileName,
                     fullText = fullTextFromPDF,
-                    keywordsCount = PDFWordsCounts
+                    keywordsCount = PDFWordsDictionary
                 };
 
                 Console.WriteLine(String.Concat("Salvando documento: ", preprocessedDocument.fileName));
