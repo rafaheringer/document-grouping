@@ -1,36 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Firebase.Database;
-using iTextSharp.text.pdf;
-using iTextSharp.text.pdf.parser;
 using Newtonsoft.Json;
+using pre_processing_console.factories;
 
 namespace pre_processing_console
 {
     class Program
     {
         private static List<KeyValuePair<int, string>> wordsList = new List<KeyValuePair<int, string>>();
-
-        static string[] ListPDFsLocally(string path) {
-            if(!Directory.Exists(path)) {
-                throw new Exception(String.Concat("Ops, parece que esta pasta não existe...", path));
-            }
-
-            return Directory.GetFiles(path, "*.pdf", SearchOption.AllDirectories);
-        }
-
-        static string ExtractPDFullText(string pdfPath) {
-            PdfReader reader = new PdfReader(pdfPath);    
-            StringWriter output = new StringWriter();
-            output.WriteLine(PdfTextExtractor.GetTextFromPage(reader, 1, new SimpleTextExtractionStrategy()));         
-
-            return output.ToString();
-        }
+        private static PDFFactory pdfFactory = new PDFFactory();
 
         static string CleanString(string text) => string.Join(" ", text.Split().Where(x => !new string[] { @"\r", @"\t", @"\n" }.Contains(x)));
 
@@ -90,12 +73,12 @@ namespace pre_processing_console
             // 1. Lista os arquivos PDFs locais
             // Depois será uma lista de arquivos via banco de dados
             // E depois será apenas uma trigger para todo arquivo subido
-            listOfPDFs = ListPDFsLocally(pathToReadPDFFiles);
+            listOfPDFs = pdfFactory.ListPDFsLocally(pathToReadPDFFiles);
             
             foreach (var pdfPath in listOfPDFs)
             {
                 // 2. Extrai o texto por completo
-                var fullTextFromPDF = ExtractPDFullText(pdfPath);
+                var fullTextFromPDF = pdfFactory.ExtractPDFullText(pdfPath);
                 var PDFWords = ExtractImportantWordsFromText(fullTextFromPDF);
                 var PDFWordsCounts = new List<KeyCountModel>();
 
