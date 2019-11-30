@@ -73,7 +73,7 @@ namespace pre_processing_console
         {
             var globalWordsDictionary = GetWordsDictionary();
             var firebaseClient = FirebaseAuthentication();
-            string pathToReadPDFFiles = (args.Length != 0) ? args[0] : @"C:\Users\Rafael_Heringer\Downloads\_TESTE";
+            string pathToReadPDFFiles = (args.Length != 0) ? args[0] : @"D:\_teste2";
             string[] listOfPDFs;
 
             // 1. Lista os arquivos PDFs locais
@@ -127,12 +127,12 @@ namespace pre_processing_console
                     keywordsCount = PDFWordsCounts
                 };
 
-                await firebaseClient.Child(preprocessedDocument.fileId.Replace(".","").Replace(" ","")).PutAsync(JsonConvert.SerializeObject(preprocessedDocument));
+                await firebaseClient.Child("preprocessed-documents/" + preprocessedDocument.fileId.Replace(".","").Replace(" ","")).PutAsync(JsonConvert.SerializeObject(preprocessedDocument));
             }
           
             var a = globalWordsDictionary;
             
-            await firebaseClient.Child("_global-words").PutAsync(JsonConvert.SerializeObject(globalWordsDictionary));
+            await firebaseClient.Child("global-words").PutAsync(JsonConvert.SerializeObject(globalWordsDictionary));
 
             Console.WriteLine("Hello World!");
         }
