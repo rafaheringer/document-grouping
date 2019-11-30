@@ -9,8 +9,8 @@ import { Observable } from 'rxjs';
 })
 export class LearningService {
 
-  private _limitKeywords = 20;
-  private _tolerance = 0.30;
+  private _limitKeywords = 50;
+  private _tolerance = 0.20;
   private _equalizeGroupWhenDocumentCountIs = 3;
   private _groups: GroupLearningModel[] = [];
 

@@ -7,7 +7,7 @@
             <div class="row pl-2 pr-2">
                 <div class="col-sm-2 p-1" *ngFor="let document of group.documents">
                     <div class="card">
-                        <img clas="card-img-top" height="90" />
+                        <div class="card-img-top border-bottom"></div>
 
                         <div class="card-words-resume border bg-light p-1">
                             <div class="card-words-resume-item" *ngFor="let word of document.keywordsCount">
@@ -19,7 +19,7 @@
                         </div>
 
                         <div class="card-body p-1">
-                            <p class="card-text">{{document.fileName}}</p>
+                            <p class="card-text small">{{document.fileName}}</p>
                         </div>
                     </div>
                 </div>
