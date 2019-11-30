@@ -3,6 +3,7 @@ import { DocumentModel, GlobalKeywordsModel } from 'src/app/models/document.mode
 import { DocumentsService } from '../../services/documents.service';
 import { LearningService } from '../../services/learning.service';
 import { GroupLearningModel } from 'src/app/models/learning.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-viewer',
@@ -13,6 +14,7 @@ export class ViewerComponent implements OnInit {
 
   public groups: GroupLearningModel[] = [];
   public wordsIndex: GlobalKeywordsModel[] = [];
+  public states = {loadingWords: true, loadingDocuments: true};
 
   private _documents: DocumentModel[] = [];
 
@@ -25,41 +27,32 @@ export class ViewerComponent implements OnInit {
   constructor(
     private documentsService: DocumentsService,
     private learningService: LearningService
-    ) { }
+    ) {}
 
-  private updateWordsIndex(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.documentsService.getWordsIndex().then(words => {
-        this.wordsIndex = words;
-        resolve();
-      }, reject);
-    });
-  }
-
-  private updateDocuments(limit: number) {
-    this.documentsService.getLatestProcessedDocuments(limit).subscribe(documents => {
-      // TODO: Descobrir por que a primeira e segunda posição vem como ARRAY!!!!
-      documents.forEach((item) => {
-        if (item.fileName) {
-          item.keywordsCount[0] = {0: item.keywordsCount[0][0]};
-          item.keywordsCount[1] = {1: item.keywordsCount[1][1]};
-        }
-      });
-
-      this._documents = documents;
-      this.createGroups(this._documents);
-    });
-  }
 
   private createGroups(documents: DocumentModel[]) {
     this.learningService.compareOneAgainstAll(documents);
     this.groups = this.learningService.getGroups();
+    console.log('Groups created...');
   }
 
   async ngOnInit() {
-    await this.updateWordsIndex();
-    this.updateDocuments(10);
-    this.createGroups(this._documents);
+    this.states.loadingWords = true;
+    this.states.loadingDocuments = true;
+
+    this.documentsService.getWordsIndex().subscribe(words => {
+      this.wordsIndex = words;
+      this.states.loadingWords = false;
+      console.log('Updated words index...');
+
+      this.documentsService.getLatestProcessedDocuments(10).subscribe(documents => {
+        this._documents = documents;
+        this.states.loadingDocuments = false;
+        console.log('Updated documents...');
+
+        this.createGroups(this._documents);
+      });
+    });
   }
 
 }

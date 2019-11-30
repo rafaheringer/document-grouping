@@ -14,37 +14,13 @@ export class DocumentsService {
 
   }
 
-  getWordsIndex(): Promise<GlobalKeywordsModel[]> {
+  getWordsIndex(): Observable<GlobalKeywordsModel[]> {
     // return of(KEYWORDSMOCK);
-
-    return new Promise(async (resolve, reject) => {
-
-      try {
-        this.firebase.list('/').valueChanges().subscribe((allValues) => {
-          let correctValue;
-
-          allValues.forEach(item => {
-            // tslint:disable-next-line: no-string-literal
-            if (!item['fileId']) {
-              correctValue = item;
-            }
-          });
-
-          resolve(correctValue);
-        });
-
-
-      } catch (ex) {
-        reject(ex);
-      }
-
-    });
-    return ;
-
+    return this.firebase.list<GlobalKeywordsModel>('/global-words').valueChanges();
   }
 
   getLatestProcessedDocuments(limit: number = 100): Observable<DocumentModel[]> {
     // return of(DOCUMENTSMOCK);
-    return this.firebase.list<DocumentModel>('/').valueChanges();
+    return this.firebase.list<DocumentModel>('/preprocessed-documents').valueChanges();
   }
 }
