@@ -42,7 +42,7 @@ namespace pre_processing_console
             text = RemoveDiacritics(text);
 
             var words = text.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-            return words.Except(ignoreList).ToArray();
+            return words.Where(x => !ignoreList.Any(i => i == x)).ToArray();
         }
 
         static string RemoveDiacritics(string text) {
@@ -115,6 +115,8 @@ namespace pre_processing_console
                         var dict = new Dictionary<int, int>();
                         dict.Add(globalDictionaryWordIndex.Key, 1);
                         PDFWordsCounts.Add(dict);
+                    } else {
+                        pdfDictionaryWordIndex[globalDictionaryWordIndex.Key]++;
                     }
                 };
 
