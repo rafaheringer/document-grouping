@@ -12,7 +12,7 @@ Made with Angular, the objetive is clarify the Machine Learning process with vis
 
 
 ## First step: Feature Extraction - Bag of Words
-<img src="https://qph.fs.quoracdn.net/main-qimg-4934f0958e121d33717f848230ef664a" width="400" style="margin-right: 15px;" align="left" />
+<img src="https://qph.fs.quoracdn.net/main-qimg-4934f0958e121d33717f848230ef664a" width="280" align="left" />
 
 The bag-of-words model is a way of representing text data when modeling text with machine learning algorithms, where a vector represents the frequency of a word in a predefined dictionary of words. Machine learning algorithms cannot work with raw text directly; the text must be converted into numbers. Specifically, vectors of numbers. The model is only concerned with whether known words occur in the document, not where in the document.
 
@@ -27,12 +27,23 @@ I our code, this is made using the Console Application. It's easy: first create 
 Read more:
 - [Gentle Introduction Bag Words Model](https://machinelearningmastery.com/gentle-introduction-bag-words-model/)
 
-## Second: the score
-
-
 TODO:
 - [ ] Study and apply code with bigram approach 
 - [ ] Test using terms (sentences) instead of words. I can define sentences using the PDF or OCR regions
+
+## Second: the score, hashing and TF-IDF
+
+Scoring methods include:
+
+1. Counts. Count the number of times each word appears in a document.
+2. Frequencies. Calculate the frequency that each word appears in a document out of all the words in the document.
+
+In this case, we are using the simple `frequencies` method. We aren't using a hashing technique for improve performance because the purpouse here is to learn the algorithm.
+
+A problem with scoring word frequency is that highly frequent words start to dominate in the document (e.g. larger score), but may not contain as much “informational content” to the model as rarer but perhaps domain specific words.
+
+One approach is to rescale the frequency of words by how often they appear in all documents, so that the scores for frequent words like “the” that are also frequent across all documents are penalized.
+
 
 ------------
 
