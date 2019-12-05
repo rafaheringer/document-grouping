@@ -49,7 +49,7 @@ namespace pre_processing_console
                     keywordsCount = localBagDictionary
                 };
 
-                Console.WriteLine(String.Concat("Salvando documento: ", preprocessedDocument.fileName));
+                Console.WriteLine(String.Concat("Saving document: ", preprocessedDocument.fileName));
                 await firebaseClient.Child("preprocessed-documents/" + preprocessedDocument.fileId.Replace(".", "").Replace(" ", "")).PutAsync(JsonConvert.SerializeObject(preprocessedDocument));
             }
 

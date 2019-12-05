@@ -44,6 +44,15 @@ A problem with scoring word frequency is that highly frequent words start to dom
 
 One approach is to rescale the frequency of words by how often they appear in all documents, so that the scores for frequent words like “the” that are also frequent across all documents are penalized.
 
+Read more:
+- [https://monkeylearn.com/blog/word-embeddings-transform-text-numbers/](https://monkeylearn.com/blog/word-embeddings-transform-text-numbers/)
+
+## Third: The algorithm
+
+One of the many things you can encode in vectors is the probability of appearance of a word or a sequence of words of length n (also known as n-gram) within the words of a text or the words of a category. Since a Naive Bayes text classifier is based on the Bayes’s Theorem, which helps us compute the conditional probabilities of occurrence of two events based on the probabilities of occurrence of each individual event, encoding those probabilities is extremely useful.
+
+Read more:
+- [A practical explanation of a Naive Bayes classifier](https://monkeylearn.com/blog/practical-explanation-naive-bayes-classifier/)
 
 ------------
 
