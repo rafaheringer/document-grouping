@@ -29,7 +29,18 @@ namespace pre_processing_console
 
         static async Task Main(string[] args)
         {
-            var pathToReadPDFFiles = (args.Length != 0) ? args[0] : @"D:\_teste2";
+            var pathToReadPDFFiles = (args.Length != 0) ? args[0] : null;
+
+            Console.WriteLine("Hello! Welcome to the basic of Machine Learning code.");
+            Console.WriteLine("I'm the developer who is writing this poor code, and don't have idea how AI Works.");
+            Console.WriteLine("");
+
+            if (pathToReadPDFFiles == null) 
+            {
+                Console.WriteLine("Where is your PDF files to test this?");
+                pathToReadPDFFiles =  Console.ReadLine();
+            }
+
             var listOfPDFs = pdfFactory.ListPDFsLocally(pathToReadPDFFiles);
 
             foreach (var pdfPath in listOfPDFs)
@@ -55,7 +66,8 @@ namespace pre_processing_console
 
             await firebaseClient.Child("global-words").PutAsync(JsonConvert.SerializeObject(bagOfWordsFactory.GetGlobalWordsDictionary()));
 
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Hello World! You know... enter to exit.");
+            Console.ReadLine();
         }
     }
 }

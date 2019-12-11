@@ -61,6 +61,7 @@ namespace pre_processing_console.factories
                 var localBagWord                = this._bag.Find(x => x.Key == globalDictionaryWordIndex.Key);
 
                 // Check if word in in local bag
+                // This is the WORDS FREQUENCIES
                 this._bag.RemoveAll(x => x.Key == globalDictionaryWordIndex.Key);
                 this._bag.Add(new KeyValuePair<int, int>(globalDictionaryWordIndex.Key,localBagWord.Value + 1));
             }

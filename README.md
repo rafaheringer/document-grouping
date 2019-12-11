@@ -51,6 +51,8 @@ Read more:
 
 One of the many things you can encode in vectors is the probability of appearance of a word or a sequence of words of length n (also known as n-gram) within the words of a text or the words of a category. Since a Naive Bayes text classifier is based on the Bayes’s Theorem, which helps us compute the conditional probabilities of occurrence of two events based on the probabilities of occurrence of each individual event, encoding those probabilities is extremely useful.
 
+Naive Bayes is a family of statistical algorithms we can make use of when doing text classification. One of the members of that family is Multinomial Naive Bayes (MNB). One of its main advantages is that you can get really good results when data available is not much (~ a couple of thousand tagged samples) and computational resources are scarce.
+
 Read more:
 - [A practical explanation of a Naive Bayes classifier](https://monkeylearn.com/blog/practical-explanation-naive-bayes-classifier/)
 
