@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Firebase.Database;
 using Newtonsoft.Json;
 using pre_processing_console.factories;
+using pre_processing_console.models;
 
 namespace pre_processing_console
 {
@@ -50,7 +51,6 @@ namespace pre_processing_console
                 var localBag            = new BagOfWordsFactory.LocalBagOfWords(bagOfWordsFactory, fullTextFromPDF);
                 var localBagDictionary  = localBag.CreateBag();
 
-                // Persinst data
                 var fileName = pdfPath.Split("\\").Last();
                 var preprocessedDocument = new PreprocessedDocumentModel()
                 {
@@ -60,11 +60,15 @@ namespace pre_processing_console
                     keywordsCount = localBagDictionary
                 };
 
-                Console.WriteLine(String.Concat("Saving document: ", preprocessedDocument.fileName));
-                await firebaseClient.Child("preprocessed-documents/" + preprocessedDocument.fileId.Replace(".", "").Replace(" ", "")).PutAsync(JsonConvert.SerializeObject(preprocessedDocument));
+                //Training DATA
+
+                //Discovery
+
+                // Console.WriteLine(String.Concat("Saving document: ", preprocessedDocument.fileName));
+                // await firebaseClient.Child("preprocessed-documents/" + preprocessedDocument.fileId.Replace(".", "").Replace(" ", "")).PutAsync(JsonConvert.SerializeObject(preprocessedDocument));
             }
 
-            await firebaseClient.Child("global-words").PutAsync(JsonConvert.SerializeObject(bagOfWordsFactory.GetGlobalWordsDictionary()));
+            // await firebaseClient.Child("global-words").PutAsync(JsonConvert.SerializeObject(bagOfWordsFactory.GetGlobalWsordsDictionary()));
 
             Console.WriteLine("Hello World! You know... enter to exit.");
             Console.ReadLine();
