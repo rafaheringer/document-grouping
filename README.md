@@ -7,6 +7,11 @@ This repository consists in two projects:
 ### console app
 Made with C# .NET Core, this is a Console App with functions to get, prepare and save the data required to start the machine learning. 
 
+To-do:
+[ ] Persist the global words dictionary
+[ ] Retrieve the global words dictionary
+[ ] Accept a text file or input, not only local PDFs
+
 ### web app
 Made with Angular, the objetive is clarify the Machine Learning process with visual context. This is study purpose, so I'm no preocupied with performance.
 
@@ -26,6 +31,7 @@ I our code, this is made using the Console Application. It's easy: first create 
 
 Read more:
 - [Gentle Introduction Bag Words Model](https://machinelearningmastery.com/gentle-introduction-bag-words-model/)
+- [An Introduction to Bag-of-Words in NLP](https://medium.com/greyatom/an-introduction-to-bag-of-words-in-nlp-ac967d43b428)
 
 TODO:
 - [ ] Study and apply code with bigram approach 
@@ -46,19 +52,22 @@ One approach is to rescale the frequency of words by how often they appear in al
 
 Read more:
 - [https://monkeylearn.com/blog/word-embeddings-transform-text-numbers/](https://monkeylearn.com/blog/word-embeddings-transform-text-numbers/)
+- [What is TF-IDF?](https://monkeylearn.com/blog/what-is-tf-idf/)
 
 ## Third: The algorithm
 
 One of the many things you can encode in vectors is the probability of appearance of a word or a sequence of words of length n (also known as n-gram) within the words of a text or the words of a category. Since a Naive Bayes text classifier is based on the Bayes’s Theorem, which helps us compute the conditional probabilities of occurrence of two events based on the probabilities of occurrence of each individual event, encoding those probabilities is extremely useful.
 
-Naive Bayes is a family of statistical algorithms we can make use of when doing text classification. One of the members of that family is Multinomial Naive Bayes (MNB). One of its main advantages is that you can get really good results when data available is not much (~ a couple of thousand tagged samples) and computational resources are scarce.
+**Naive Bayes** is a family of statistical algorithms we can make use of when doing text classification. One of the members of that family is Multinomial Naive Bayes (MNB). One of its main advantages is that you can get really good results when data available is not much (~ a couple of thousand tagged samples) and computational resources are scarce. But we have a problem: we don't have the labels. We need a unsupervisioned learning.
 
 Read more:
 - [A practical explanation of a Naive Bayes classifier](https://monkeylearn.com/blog/practical-explanation-naive-bayes-classifier/)
+- [Jaccard Similarity Index for measuring Document Similarity](https://nickgrattandatascience.wordpress.com/2013/11/18/jaccard-similarity-index-for-measuring-document-similarity/)
 
 ------------
 
 
 References: 
-- https://monkeylearn.com/text-classification/
-- 
+- [What is Text Classification?](https://monkeylearn.com/text-classification/)
+- [Fast Text: Library for efficient text classification and representation learning](https://fasttext.cc/)
+- [Starspace: Learn for resolve a variety of problems](https://github.com/facebookresearch/Starspace/)
