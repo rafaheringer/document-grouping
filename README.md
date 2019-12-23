@@ -7,10 +7,10 @@ This repository consists in two projects:
 ### console app
 Made with C# .NET Core, this is a Console App with functions to get, prepare and save the data required to start the machine learning. 
 
-To-do:
-[ ] Persist the global words dictionary
-[ ] Retrieve the global words dictionary
-[ ] Accept a text file or input, not only local PDFs
+TODO:
+- [ ] Persist the global words dictionary
+- [ ] Retrieve the global words dictionary
+- [ ] Accept a text file or input, not only local PDFs
 
 ### web app
 Made with Angular, the objetive is clarify the Machine Learning process with visual context. This is study purpose, so I'm no preocupied with performance.

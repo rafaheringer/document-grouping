@@ -43,6 +43,7 @@ namespace pre_processing_console
             }
 
             var listOfPDFs = pdfFactory.ListPDFsLocally(pathToReadPDFFiles);
+            var preprocessedDocuments = new List<PreprocessedDocumentModel>();
 
             foreach (var pdfPath in listOfPDFs)
             {
@@ -60,13 +61,27 @@ namespace pre_processing_console
                     keywordsCount = localBagDictionary
                 };
 
-                //Training DATA
-
-                //Discovery
+                preprocessedDocuments.Add(preprocessedDocument);
 
                 // Console.WriteLine(String.Concat("Saving document: ", preprocessedDocument.fileName));
                 // await firebaseClient.Child("preprocessed-documents/" + preprocessedDocument.fileId.Replace(".", "").Replace(" ", "")).PutAsync(JsonConvert.SerializeObject(preprocessedDocument));
             }
+
+            //Trainning DATA
+            Console.WriteLine("");
+            Console.WriteLine("Processing...");
+            Console.WriteLine("");
+            var jaccardIndex = new JaccardIndexFactory();
+            var groups = jaccardIndex.Train(preprocessedDocuments);
+
+            groups.ForEach(group => {
+                Console.WriteLine("Group " + group.Id + ": ");
+                group.documents.ForEach(document => {
+                    Console.WriteLine("Document: " + document.fileName);
+                });
+                Console.WriteLine("==================================");
+                Console.WriteLine("");
+            });
 
             // await firebaseClient.Child("global-words").PutAsync(JsonConvert.SerializeObject(bagOfWordsFactory.GetGlobalWsordsDictionary()));
 
