@@ -5,16 +5,16 @@ using pre_processing_console.models;
 
 namespace pre_processing_console.factories
 {
-    public class JaccardIndexFactory
+    public class TermFrequenceIndexFactory
     {
-        private List<JaccardGroupTrainingModel> _formedGroups;
+        private List<TermFrequenceGroupTrainingModel> _formedGroups;
         private double _tolerance;
         private int _wordsLimit;
         private int _recalculateEvery;
 
-        public JaccardIndexFactory()
+        public TermFrequenceIndexFactory()
         {
-            this._formedGroups = new List<JaccardGroupTrainingModel>();
+            this._formedGroups = new List<TermFrequenceGroupTrainingModel>();
             this._tolerance = 0.2;
             this._wordsLimit = 50;
             this._recalculateEvery = 20;
@@ -48,7 +48,7 @@ namespace pre_processing_console.factories
 
         private Guid CreateGroup()
         {
-            var group = new JaccardGroupTrainingModel()
+            var group = new TermFrequenceGroupTrainingModel()
             {
                 averageWordsCount = null,
                 Id = Guid.NewGuid(),
@@ -62,7 +62,7 @@ namespace pre_processing_console.factories
             return group.Id;
         }
 
-        public List<JaccardGroupTrainingModel> Train(List<PreprocessedDocumentModel> documents)
+        public List<TermFrequenceGroupTrainingModel> Train(List<PreprocessedDocumentModel> documents)
         {
             documents.ForEach(document =>
             {
@@ -94,7 +94,7 @@ namespace pre_processing_console.factories
             return this._formedGroups;
         }
 
-        private JaccardGroupProcessResultModel Process(PreprocessedDocumentModel document, JaccardGroupTrainingModel group)
+        private TermFrequenceGroupProcessResultModel Process(PreprocessedDocumentModel document, TermFrequenceGroupTrainingModel group)
         {
             double finalSkore = 0;
             var skores = new List<Tuple<double, double>>();
@@ -110,8 +110,6 @@ namespace pre_processing_console.factories
                 if (document.keywordsCount.Any(d => d.Key == averageWord.Key))
                 {
                     var keyCount = document.keywordsCount.Find(d => d.Key == averageWord.Key).Value;
-                    var maxTolerance = keyGroupAverageCount + (keyGroupAverageCount * group.tolerance);
-                    var minTolerance = keyGroupAverageCount - (keyGroupAverageCount * group.tolerance);
 
                     skore = 1 - (group.tolerance / Math.Abs(1 - (keyCount / keyGroupAverageCount)));
                     if(double.IsInfinity(skore))
@@ -130,7 +128,7 @@ namespace pre_processing_console.factories
                 finalSkore += skore.Item1 * skore.Item2;
             });
 
-            return new JaccardGroupProcessResultModel()
+            return new TermFrequenceGroupProcessResultModel()
             {
                 calculatedSkore = finalSkore,
                 isCompatible = finalSkore >= 1 - this._tolerance

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace pre_processing_console.models
 {
-    public class JaccardGroupTrainingModel
+    public class TermFrequenceGroupTrainingModel
     {
         public Guid Id { get; set; }
         public List<KeyValuePair<int, int>> averageWordsCount { get; set; }
@@ -13,7 +13,7 @@ namespace pre_processing_console.models
         public List<PreprocessedDocumentModel> documents { get; set; }
     }
 
-    public class JaccardGroupProcessResultModel
+    public class TermFrequenceGroupProcessResultModel
     {
         public bool isCompatible { get; set; }
         public double calculatedSkore { get; set;}

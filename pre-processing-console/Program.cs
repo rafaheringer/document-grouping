@@ -45,6 +45,9 @@ namespace pre_processing_console
             var listOfPDFs = pdfFactory.ListPDFsLocally(pathToReadPDFFiles);
             var preprocessedDocuments = new List<PreprocessedDocumentModel>();
 
+            Console.WriteLine("Creating BoW...");
+            Console.WriteLine("");
+
             foreach (var pdfPath in listOfPDFs)
             {
                 // Extract PDF text and words
@@ -63,16 +66,18 @@ namespace pre_processing_console
 
                 preprocessedDocuments.Add(preprocessedDocument);
 
+                Console.WriteLine("Document " + preprocessedDocument.fileName + " processed.");
+
                 // Console.WriteLine(String.Concat("Saving document: ", preprocessedDocument.fileName));
                 // await firebaseClient.Child("preprocessed-documents/" + preprocessedDocument.fileId.Replace(".", "").Replace(" ", "")).PutAsync(JsonConvert.SerializeObject(preprocessedDocument));
             }
 
             //Trainning DATA
             Console.WriteLine("");
-            Console.WriteLine("Processing...");
+            Console.WriteLine("Processing training data...");
             Console.WriteLine("");
-            var jaccardIndex = new JaccardIndexFactory();
-            var groups = jaccardIndex.Train(preprocessedDocuments);
+            var TFIndex = new TermFrequenceIndexFactory();
+            var groups = TFIndex.Train(preprocessedDocuments);
 
             groups.ForEach(group => {
                 Console.WriteLine("Group " + group.Id + ": ");
