@@ -17,7 +17,7 @@ namespace pre_processing_console.factories
             this._formedGroups = new List<TermFrequenceGroupTrainingModel>();
             this._tolerance = 0.2;
             this._wordsLimit = 50;
-            this._recalculateEvery = 20;
+            this._recalculateEvery = 5;
         }
 
         private static double Calc(HashSet<int> hs1, HashSet<int> hs2) => ((double)hs1.Intersect(hs2).Count() / (double)hs1.Union(hs2).Count());
@@ -28,19 +28,29 @@ namespace pre_processing_console.factories
         {
             var group = this._formedGroups.Find(x => x.Id == groupId);
 
-            if (group.documents.Count % this._recalculateEvery == 0 || group.averageWordsCount == null)
-            {
-                var averageWordsCount = new List<KeyValuePair<int, int>>();
+            if(group.averageWordsCount == null) {
+                group.averageWordsCount = group.documents.First().keywordsCount;
+            }
 
-                averageWordsCount = group.documents.First().keywordsCount;
+            else if (group.documents.Count % this._recalculateEvery == 0)
+            {
+                var averageWordsCount = new List<KeyValuePair<int, double>>();
+
+                group.averageWordsCount.ForEach(word => {
+                    word = new KeyValuePair<int, double>(word.Key, group.documents.Average(x => x.keywordsCount.Find(w => w.Key == word.Key).Value));
+                });
 
                 // group.documents.ForEach(document => {
                 //     document.keywordsCount.ForEach(wordIndex => {
+                //         var TF = averageWordsCount.Find(a => a.Key == wordIndex.Key);
+                //         var documentsWithThisKey = group.documents.Count(a => a.keywordsCount.Exists(b => b.Key == wordIndex.Key));
+                //         var IDF = Math.Log(group.documents.Count / (1 + documentsWithThisKey));
 
+                                                
                 //     });
                 // });
 
-                group.averageWordsCount = averageWordsCount;
+                //group.averageWordsCount = averageWordsCount;
             }
         }
 

@@ -28,7 +28,7 @@ namespace pre_processing_console.factories
 
         public class LocalBagOfWords
         {
-            private List<KeyValuePair<int, int>> _bag = new List<KeyValuePair<int, int>>();
+            private List<KeyValuePair<int, double>> _bag = new List<KeyValuePair<int, double>>();
             private string _text;
             private BagOfWordsFactory _bagOfWordsFactory;
 
@@ -63,10 +63,10 @@ namespace pre_processing_console.factories
                 // Check if word in in local bag
                 // This is the WORDS FREQUENCIES
                 this._bag.RemoveAll(x => x.Key == globalDictionaryWordIndex.Key);
-                this._bag.Add(new KeyValuePair<int, int>(globalDictionaryWordIndex.Key,localBagWord.Value + 1));
+                this._bag.Add(new KeyValuePair<int, double>(globalDictionaryWordIndex.Key,localBagWord.Value + 1));
             }
 
-            public List<KeyValuePair<int, int>> GetBag() 
+            public List<KeyValuePair<int, double>> GetBag() 
             {
                 var bag = this._bag;
                 bag.Sort((a, b) => a.Key - b.Key);
@@ -74,7 +74,7 @@ namespace pre_processing_console.factories
                 return bag;
             }
 
-            public List<KeyValuePair<int, int>> CreateBag()
+            public List<KeyValuePair<int, double>> CreateBag()
             {
                 var words = this.PrepareTextToBag();
 
